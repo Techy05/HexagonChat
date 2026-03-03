@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HexagonChat</title>
+    <link rel="stylesheet" href="sources/style.css">
+</head>
+
+<body>
+    <h1>HexagonChat</h1>
+    <h3>Real-Time Open Chatting Platform, powered by Socket.IO</h3>
+
+    <div class="playground">
+
+        <div class="msgbox">
+            <!-- Messages go here -->
+        </div>
+
+        <form class="textbox" action="">
+            <input class="field" id="text" autocomplete="off" placeholder="Write something..." required>
+            <button type="button" onclick="sendMessage()">></button>
+        </form>
+
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="sources/app.js"></script>
+    
+</body>
+</html>
