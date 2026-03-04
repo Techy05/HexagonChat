@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
     io.emit("onlineCounter", onlineCounter);
 
     socket.on("new message", (msg) => {
-        console.log("Message received: (", msgHistory.length+1, ") ", msg);
+        console.log("Message received: (", msgHistory.length+1, ") ", msg, " {", clientId, "}");
         const data = {
             text: msg,
             senderId: clientId
