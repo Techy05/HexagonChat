@@ -9,6 +9,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 let msgHistory = [];
+let onlineCounter = 0;
 
 app.use(cookieParser());
 app.use((req, res, next) => {
@@ -29,15 +30,17 @@ io.on("connection", (socket) => {
     console.log("User connected: ", clientId);
     socket.emit("clientId", clientId);
     socket.emit("load messages", msgHistory);
+    onlineCounter++;
+    io.emit("onlineCounter", onlineCounter);
 
-    socket.on("send message", (msg) => {
+    socket.on("new message", (msg) => {
         console.log("Message received: (", msgHistory.length+1, ") ", msg);
         const data = {
             text: msg,
             senderId: clientId
         };
         msgHistory.push(data);
-        io.emit("send message", data);
+        io.emit("new message", data);
     });
 
     socket.on("log", (text) => {
@@ -46,6 +49,13 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("User Disconnected: ", clientId);
+        onlineCounter--;
+        io.emit("onlineCounter", onlineCounter);
+    });
+
+    socket.on("reconnect", () => {
+        console.log("Reconnected");
+        location.reload();
     });
 });
 

@@ -21,8 +21,15 @@ h3 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.online {
+    color: rgb(230, 230, 230);
+    font-size: small;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
 .playground {
-    margin-top: 2dvh;
+    margin-top: 0.5dvh;
     background-color: rgb(30, 30, 30);
     border-radius: 4dvh;
     flex-grow: 100;
@@ -69,23 +76,29 @@ h3 {
 }
 
 .textbox button {
-    font-family: monospace;
-    font-size: 1.5em;
-    font-weight: bolder;
-    text-align: center;
-    height: 1.5em;
-    width: 1.5em;
+    height: 5dvh;
+    width: 5dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
     position: absolute;
-    right: 1.5em;
+    right: 1.5dvh;
     border: none;
+    cursor: pointer;
+}
+
+.textbox button img {
+    height: 3dvh;
+    width: 3dvh;
 }
 
 .msgbox {
     display: flex;
     flex-direction: column;
     padding: 2.5dvh;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     max-height: 85%;
     scrollbar-width: thin;
     scrollbar-color: rgb(110, 110, 110) transparent;
@@ -104,6 +117,7 @@ h3 {
     display: flex;
     word-break: break-all;
     overflow-wrap: break-word;
+    will-change: transform;
 }
 
 .mymessage {
@@ -130,6 +144,59 @@ h3 {
     margin-left: 1em;
 }
 
+/*Animations*/
+.animateButton {
+    img {
+        animation: squeeze 0.35s cubic-bezier(0.25, 1.25, 0.25, 1.25);
+    }
+}
+
+@keyframes squeeze {
+    40% {
+        transform: translateX(0.8dvh) scale(0.9, 1.1);
+    }
+    100% {
+        transform: translateX(0) scale(1, 1);
+    }
+}
+
+.slide-left {
+    animation: bounceLeft 0.45s cubic-bezier(.23, 1.2, .15, 1);
+}
+
+.slide-right {
+    animation: bounceRight 0.45s cubic-bezier(.23, 1.2, .15, 1);
+}
+
+@keyframes bounceLeft {
+    0% {
+        transform: translate(-40px, -15px) scale(0.90);
+        opacity: 0;
+    }
+    40% {
+        transform: translate(6px, 2px) scale(1.02);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+@keyframes bounceRight {
+    0% {
+        transform: translate(40px, 15px) scale(0.90);
+        opacity: 0;
+    }
+    40% {
+        transform: translate(-6px, -2px) scale(1.01);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+
 @media screen and (max-width: 600px) {
     .playground {
         width: 91%;
@@ -139,5 +206,6 @@ h3 {
     }
     h3 {
         max-width: 80%;
+        font-size: 1em;
     }
 }

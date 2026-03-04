@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HexagonChat</title>
     <link rel="stylesheet" href="sources/style.css">
+    <link rel="icon" type="image/x-icon" href="sources/img/favicon.ico" />
 </head>
 
 <body>
     <h1>HexagonChat</h1>
     <h3>Real-Time Open Chatting Platform, powered by Socket.IO</h3>
 
+    <span class="online"></span>
     <div class="playground">
 
         <div class="msgbox">
@@ -19,7 +21,9 @@
 
         <form class="textbox" action="">
             <input class="field" id="text" autocomplete="off" placeholder="Write something..." required>
-            <button type="button" onclick="sendMessage()">></button>
+            <button type="button" id="sendButton" onclick="sendMessage()">
+                <img src="sources/img/send-svgrepo-com.svg">
+            </button>
         </form>
 
     </div>

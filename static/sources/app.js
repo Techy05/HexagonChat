@@ -1,19 +1,27 @@
 const socket = io();
 let clientId = null;
+let onlineCounter = null;
 
 socket.on("clientId", (id) => {
     clientId = id;
 });
 
+socket.on("onlineCounter", (count) => {
+    onlineCounter = count;
+    const online = document.querySelector(".online");
+    online.textContent = "People Online: " + onlineCounter;
+})
+
 const container = document.querySelector(".msgbox");
 
 socket.on("load messages", (msgHistory) => {
+    container.innerHTML = "";
     for (let i = 0; i < msgHistory.length; i++) {
         printMessages(msgHistory[i]);
     }
 });
 
-socket.on("send message", (data) => {
+socket.on("new message", (data) => {
     printMessages(data);
     container.scrollTop = container.scrollHeight;
 });
@@ -23,7 +31,9 @@ function printMessages(data) {
     message.className = "message";
 
     if (data.senderId === clientId) {
-        message.classList.add("mymessage");
+        message.classList.add("mymessage", "slide-right");
+    } else {
+        message.classList.add("slide-left");
     }
 
     const avatar = document.createElement("span");
@@ -46,8 +56,9 @@ function sendMessage() {
     const message = input.value;
 
     if (message.trim() !== "") {
-        socket.emit("send message", message);
+        socket.emit("new message", message);
         input.value = "";
+        sendButton.classList.add("animateButton");
     }
 }
 
@@ -64,3 +75,9 @@ input.addEventListener("keydown", function(event) {
         sendMessage();
     }
 })
+
+const sendButton = document.getElementById("sendButton");
+sendButton.addEventListener("animationend", () => {
+    sendButton.classList.remove("animateButton");
+});
+
