@@ -91,6 +91,7 @@ h3 {
 .textbox button img {
     height: 3dvh;
     width: 3dvh;
+    will-change: transform;
 }
 
 .msgbox {

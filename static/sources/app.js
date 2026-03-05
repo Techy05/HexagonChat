@@ -63,9 +63,13 @@ function sendMessage() {
 }
 
 function getColorFromId(id) {
-    const number = parseInt(id.substring(0, 8), 16);
-    const hue = number % 360;
-    return `hsl(${hue}, 70%, 60%)`;
+    const num = id.replace(/-/g, "");
+
+    const hue = parseInt(num.substring(0, 12), 16) % 360;
+    const saturation = 55 + (parseInt(num.substring(12, 18), 16) % 30);
+    const lightness = 40 + (parseInt(num.substring(18, 24), 16) % 40);
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
 
 const input = document.getElementById("text");
@@ -80,4 +84,3 @@ const sendButton = document.getElementById("sendButton");
 sendButton.addEventListener("animationend", () => {
     sendButton.classList.remove("animateButton");
 });
-
