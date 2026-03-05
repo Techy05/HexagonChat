@@ -9,13 +9,16 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 let msgHistory = [];
-let onlineCounter = 0;
+let onlineConnections = [];
 
 app.use(cookieParser());
 app.use((req, res, next) => {
     if (!req.cookies.clientId) {
         const id = crypto.randomUUID();
-        res.cookie("clientId", id);
+        res.cookie("clientId", id, {
+            maxAge: 1000 * 60 * 60 * 24 * 365,
+            sameSite: "lax"
+        });
     }
     next();
 });
@@ -30,8 +33,10 @@ io.on("connection", (socket) => {
     console.log("User connected: ", clientId);
     socket.emit("clientId", clientId);
     socket.emit("load messages", msgHistory);
-    onlineCounter++;
-    io.emit("onlineCounter", onlineCounter);
+    if (!onlineConnections.includes(clientId)) {
+        onlineConnections.push(clientId);
+    }
+    io.emit("online counter", onlineConnections.length);
 
     socket.on("new message", (msg) => {
         console.log("Message received: (", msgHistory.length+1, ") ", msg, " {", clientId, "}");
@@ -49,8 +54,8 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("User Disconnected: ", clientId);
-        onlineCounter--;
-        io.emit("onlineCounter", onlineCounter);
+        onlineConnections.splice(onlineConnections.indexOf(clientId), 1);
+        io.emit("online counter", onlineConnections.length);
     });
 
     socket.on("reconnect", () => {
